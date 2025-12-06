@@ -1,0 +1,13 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Phase 5 will define full models; placeholder to keep Prisma initialized.
+model _Placeholder {
+  id Int @id @default(autoincrement())
+}
