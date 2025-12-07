@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int              @id @default(autoincrement())
+  walletAddress String           @unique
+  createdAt     DateTime         @default(now())
+  tournaments   Tournament[]     @relation("CreatorTournaments")
+  joins         TournamentJoin[]
+  predictions   Prediction[]
+  scores        Score[]
+}
+
+model Tournament {
+  name        String           @default("Tournament")
+  id          Int              @id @default(autoincrement())
+  entryFee    String
+  duration    String
+  status      String           @default("upcoming")
+  startTime   DateTime
+  endTime     DateTime
+  revealTime  DateTime         @default(now())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  creator     User?            @relation("CreatorTournaments", fields: [creatorId], references: [id])
+  creatorId   Int?
+  joins       TournamentJoin[]
+  predictions Prediction[]
+  scores      Score[]
+}
+
+model TournamentJoin {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId Int
+  joinedAt     DateTime   @default(now())
+
+  @@unique([userId, tournamentId])
+}
+
+model Prediction {
+  id                 Int        @id @default(autoincrement())
+  user               User       @relation(fields: [userId], references: [id])
+  userId             Int
+  tournament         Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId       Int
+  assetSymbol        String
+  predictedDirection String
+  createdAt          DateTime   @default(now())
+
+  @@unique([userId, tournamentId, assetSymbol])
+}
+
+model Score {
+  id           Int        @id @default(autoincrement())
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId Int
+  score        Float
+  rewardAmount Float
+  rank         Int
+
+  @@unique([tournamentId, rank])
+}

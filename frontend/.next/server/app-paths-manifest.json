@@ -1,0 +1,8 @@
+{
+  "/login/page": "app/login/page.js",
+  "/(protected)/tournaments/page": "app/(protected)/tournaments/page.js",
+  "/(protected)/create/page": "app/(protected)/create/page.js",
+  "/(protected)/tournaments/[id]/page": "app/(protected)/tournaments/[id]/page.js",
+  "/(protected)/tournaments/[id]/play/page": "app/(protected)/tournaments/[id]/play/page.js",
+  "/(protected)/profile/page": "app/(protected)/profile/page.js"
+}
